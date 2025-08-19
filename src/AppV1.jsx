@@ -49,41 +49,56 @@ const tempWatchedData = [
 
 const apiKey = "41949caa";
 
-export default function App() {
+export default function AppV1() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${apiKey}&s=Joker&page=1`
-        );
+  const tempQuery = "Power";
 
-        if (!res.ok) throw new Error("Network response was not ok");
-        const data = await res.json();
-        if (data.Response === "False") throw new Error(data.Error);
-        setMovies(data.Search || []);
-        console.log(data);
-        setIsLoading(false);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}&page=1`
+          );
+
+          if (!res.ok) throw new Error("Network response was not ok");
+          const data = await res.json();
+          if (data.Response === "False") throw new Error(data.Error);
+          setMovies(data.Search || []);
+          console.log(data);
+          setIsLoading(false);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
 
-    fetchMovies();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
 
   return (
     <>
       <NavBar>
         <Logo />
-        <Search />
+        <Search
+          query={query}
+          setQuery={setQuery}
+        />
         <NumResults movies={movies} />
       </NavBar>
       <Main>
@@ -105,9 +120,7 @@ export default function App() {
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-function Search() {
-  const [query, setQuery] = useState("");
-
+function Search({ query, setQuery }) {
   return (
     <input
       className='search'

@@ -2,12 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import Appv1 from "./App-v1.jsx";
+import AppV1 from "./AppV1.jsx";
 import StarRating from "./StartRating.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Appv1 />
+    <AppV1 />
 
     {/*   <StarRating
       maxRating={5}
