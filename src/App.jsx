@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import StartRating from "./StartRating.jsx";
 
-const tempMovieData = [
+/* const tempMovieData = [
   {
     imdbID: "tt1375666",
     Title: "Inception",
@@ -23,7 +23,7 @@ const tempMovieData = [
     Poster:
       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
-];
+]; */
 
 /* const tempWatchedData = [
   {
@@ -50,7 +50,7 @@ const tempMovieData = [
 
 const API_KEY = "41949caa";
 
-export default function AppV1() {
+export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
