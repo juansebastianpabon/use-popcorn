@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import AppV1 from "./AppV1.jsx";
 import StarRating from "./StartRating.jsx";
+import Appv2 from "./Appv2.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
