@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import StartRating from "./StartRating.jsx";
 import { useMovies } from "./useMovie.jsx";
+import { useLocalStorageState } from "./useLocalStorageState.jsx";
+import { useKey } from "./useKey.jsx";
 /* const tempMovieData = [
   {
     imdbID: "tt1375666",
@@ -53,10 +55,12 @@ const API_KEY = "41949caa";
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  const [watched, setWatched] = useState(function () {
+
+  const [watched, setWatched] = useLocalStorageState([], "watched");
+  /*  const [watched, setWatched] = useState(function () {
     const storeData = localStorage.getItem("watched");
     return storeData ? JSON.parse(storeData) : [];
-  });
+  }); */
 
   function handleSelectedId(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -76,13 +80,6 @@ export default function App() {
   }
 
   const { movies, isLoading, error } = useMovies(query);
-
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   return (
     <>
@@ -135,7 +132,13 @@ const average = (arr) =>
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(
+  useKey("Enter", function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setQuery("");
+  });
+
+  /*  useEffect(
     function () {
       function callback(e) {
         if (document.activeElement === inputEl.current) return;
@@ -150,7 +153,7 @@ function Search({ query, setQuery }) {
       return () => document.removeEventListener("keydown", callback);
     },
     [setQuery]
-  );
+  ); */
 
   return (
     <input
@@ -264,7 +267,8 @@ function MovieDetails({ selectedId, onCloseMovie, onAddToWatched, watched }) {
     [title]
   );
 
-  useEffect(
+  useKey("Escape", onCloseMovie);
+  /*  useEffect(
     function () {
       function callback(event) {
         if (event.key === "Escape") {
@@ -280,7 +284,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddToWatched, watched }) {
     },
     [onCloseMovie]
   );
-
+ */
   return (
     <div className='details'>
       {isLoading ? (
